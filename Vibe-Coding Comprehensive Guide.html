@@ -1,0 +1,1818 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vibe-Coding Comprehensive Guide</title>
+    <style>
+        :root {
+            --color-primary: #32b8c6;
+            --color-primary-hover: #2a9aa8;
+            --color-bg-light: #f5f5f5;
+            --color-bg-dark: #1f2937;
+            --color-text-light: #1f2937;
+            --color-text-dark: #f5f5f5;
+            --color-accent-1: #ff6b6b;
+            --color-accent-2: #4ecdc4;
+            --color-accent-3: #ffd93d;
+            --color-border: #e5e7eb;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--color-bg-light);
+            color: var(--color-text-light);
+            line-height: 1.6;
+        }
+
+        body.dark-mode {
+            background: var(--color-bg-dark);
+            color: var(--color-text-dark);
+        }
+
+        .header {
+            background: linear-gradient(135deg, #32b8c6 0%, #1a7480 100%);
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            background: white;
+            border-bottom: 1px solid var(--color-border);
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        body.dark-mode .controls {
+            background: #2d3748;
+            border-bottom-color: #4a5568;
+        }
+
+        .language-toggle {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .toggle-btn {
+            padding: 8px 16px;
+            border: 2px solid var(--color-primary);
+            background: white;
+            color: var(--color-primary);
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .toggle-btn.active {
+            background: var(--color-primary);
+            color: white;
+        }
+
+        .toggle-btn:hover {
+            background: var(--color-primary-hover);
+            border-color: var(--color-primary-hover);
+            color: white;
+        }
+
+        body.dark-mode .toggle-btn {
+            background: #374151;
+            color: var(--color-text-dark);
+            border-color: var(--color-primary);
+        }
+
+        body.dark-mode .toggle-btn.active {
+            background: var(--color-primary);
+            color: white;
+        }
+
+        .theme-toggle {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1.5em;
+            padding: 5px 10px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .nav-tabs {
+            display: flex;
+            gap: 10px;
+            border-bottom: 2px solid var(--color-border);
+            margin-bottom: 30px;
+            overflow-x: auto;
+            flex-wrap: wrap;
+        }
+
+        body.dark-mode .nav-tabs {
+            border-bottom-color: #4a5568;
+        }
+
+        .nav-tab {
+            padding: 12px 20px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1em;
+            color: #666;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        body.dark-mode .nav-tab {
+            color: #999;
+        }
+
+        .nav-tab:hover {
+            color: var(--color-primary);
+        }
+
+        .nav-tab.active {
+            color: var(--color-primary);
+            border-bottom-color: var(--color-primary);
+        }
+
+        .content-section {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .section-title {
+            font-size: 2em;
+            margin-bottom: 20px;
+            color: var(--color-primary);
+        }
+
+        .subsection {
+            background: white;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            border-left: 4px solid var(--color-primary);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        body.dark-mode .subsection {
+            background: #374151;
+            border-left-color: var(--color-accent-2);
+        }
+
+        .subsection h3 {
+            margin-bottom: 15px;
+            font-size: 1.3em;
+            color: var(--color-text-light);
+        }
+
+        body.dark-mode .subsection h3 {
+            color: var(--color-text-dark);
+        }
+
+        .code-block {
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 15px;
+            border-radius: 6px;
+            margin: 15px 0;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            line-height: 1.5;
+        }
+
+        .tool-card {
+            background: white;
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 15px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        body.dark-mode .tool-card {
+            background: #374151;
+            border-color: #4a5568;
+        }
+
+        .tool-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 12px rgba(0,0,0,0.15);
+        }
+
+        .tool-name {
+            font-size: 1.2em;
+            font-weight: 600;
+            color: var(--color-primary);
+            margin-bottom: 10px;
+        }
+
+        .tool-level {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .level-beginner {
+            background: rgba(76, 205, 196, 0.2);
+            color: #2a9aa8;
+        }
+
+        .level-intermediate {
+            background: rgba(255, 217, 61, 0.2);
+            color: #d4a500;
+        }
+
+        .level-advanced {
+            background: rgba(255, 107, 107, 0.2);
+            color: #cc5555;
+        }
+
+        .tool-description {
+            margin-bottom: 12px;
+            line-height: 1.6;
+        }
+
+        .tool-link {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 10px 15px;
+            background: var(--color-primary);
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: background 0.3s ease;
+        }
+
+        .tool-link:hover {
+            background: var(--color-primary-hover);
+        }
+
+        .feature-list {
+            list-style: none;
+            margin: 15px 0;
+        }
+
+        .feature-list li {
+            padding: 8px 0;
+            padding-left: 25px;
+            position: relative;
+        }
+
+        .feature-list li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: var(--color-accent-2);
+            font-weight: bold;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        body.dark-mode .comparison-table {
+            background: #374151;
+        }
+
+        .comparison-table th {
+            background: var(--color-primary);
+            color: white;
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .comparison-table td {
+            padding: 12px;
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        body.dark-mode .comparison-table td {
+            border-bottom-color: #4a5568;
+        }
+
+        .comparison-table tr:hover {
+            background: rgba(50, 184, 198, 0.05);
+        }
+
+        .example-card {
+            background: #f8f9fa;
+            border: 2px dashed var(--color-primary);
+            padding: 20px;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+
+        body.dark-mode .example-card {
+            background: #2d3748;
+            border-color: var(--color-accent-2);
+        }
+
+        .example-title {
+            font-weight: 600;
+            color: var(--color-primary);
+            margin-bottom: 10px;
+        }
+
+        .learning-path {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .path-card {
+            background: linear-gradient(135deg, rgba(50, 184, 198, 0.1) 0%, rgba(26, 116, 128, 0.1) 100%);
+            border: 2px solid var(--color-primary);
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        body.dark-mode .path-card {
+            background: linear-gradient(135deg, rgba(50, 184, 198, 0.2) 0%, rgba(26, 116, 128, 0.2) 100%);
+        }
+
+        .path-card h4 {
+            color: var(--color-primary);
+            margin-bottom: 10px;
+        }
+
+        .path-card p {
+            font-size: 0.9em;
+            margin: 5px 0;
+        }
+
+        .resource-link {
+            color: var(--color-primary);
+            text-decoration: none;
+            border-bottom: 2px solid var(--color-primary);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .resource-link:hover {
+            color: var(--color-primary-hover);
+            border-bottom-color: var(--color-primary-hover);
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+            margin-right: 8px;
+            margin-bottom: 8px;
+        }
+
+        .badge-tech {
+            background: rgba(76, 205, 196, 0.2);
+            color: #2a9aa8;
+        }
+
+        .badge-category {
+            background: rgba(255, 107, 107, 0.2);
+            color: #cc5555;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .visible {
+            display: block;
+        }
+
+        footer {
+            background: #f8f9fa;
+            padding: 20px;
+            text-align: center;
+            margin-top: 40px;
+            border-top: 1px solid var(--color-border);
+            font-size: 0.9em;
+            color: #666;
+        }
+
+        body.dark-mode footer {
+            background: #2d3748;
+            border-top-color: #4a5568;
+            color: #999;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8em;
+            }
+
+            .controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .language-toggle {
+                justify-content: center;
+            }
+
+            .nav-tabs {
+                overflow-x: auto;
+            }
+
+            .learning-path {
+                grid-template-columns: 1fr;
+            }
+
+            .comparison-table {
+                font-size: 0.85em;
+            }
+
+            .comparison-table th,
+            .comparison-table td {
+                padding: 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🚀 Vibe-Coding Comprehensive Guide</h1>
+        <p id="headerSubtitle">Master the Future of AI-Assisted Development</p>
+    </div>
+
+    <div class="controls">
+        <div class="language-toggle">
+            <label for="langLabel" style="font-weight: 600;">Language / Idioma:</label>
+            <button class="toggle-btn active" data-lang="en" onclick="switchLanguage('en')">English</button>
+            <button class="toggle-btn" data-lang="es" onclick="switchLanguage('es')">Español</button>
+        </div>
+        <button class="theme-toggle" onclick="toggleTheme()" title="Toggle dark mode">🌙</button>
+    </div>
+
+    <div class="container">
+        <div class="nav-tabs">
+            <button class="nav-tab active" onclick="switchSection('introduction')">
+                <span class="en-text">Introduction</span>
+                <span class="es-text hidden">Introducción</span>
+            </button>
+            <button class="nav-tab" onclick="switchSection('fundamentals')">
+                <span class="en-text">Fundamentals</span>
+                <span class="es-text hidden">Fundamentos</span>
+            </button>
+            <button class="nav-tab" onclick="switchSection('tools')">
+                <span class="en-text">Tools</span>
+                <span class="es-text hidden">Herramientas</span>
+            </button>
+            <button class="nav-tab" onclick="switchSection('examples')">
+                <span class="en-text">Examples</span>
+                <span class="es-text hidden">Ejemplos</span>
+            </button>
+            <button class="nav-tab" onclick="switchSection('learning-path')">
+                <span class="en-text">Learning Path</span>
+                <span class="es-text hidden">Ruta de Aprendizaje</span>
+            </button>
+            <button class="nav-tab" onclick="switchSection('best-practices')">
+                <span class="en-text">Best Practices</span>
+                <span class="es-text hidden">Mejores Prácticas</span>
+            </button>
+            <button class="nav-tab" onclick="switchSection('resources')">
+                <span class="en-text">Resources</span>
+                <span class="es-text hidden">Recursos</span>
+            </button>
+        </div>
+
+        <!-- INTRODUCTION SECTION -->
+        <div id="introduction" class="content-section active">
+            <h2 class="section-title">
+                <span class="en-text">What is Vibe-Coding?</span>
+                <span class="es-text hidden">¿Qué es Vibe-Coding?</span>
+            </h2>
+
+            <div class="subsection">
+                <h3>
+                    <span class="en-text">Definition & Origin</span>
+                    <span class="es-text hidden">Definición y Origen</span>
+                </h3>
+                <p class="en-text">
+                    <strong>Vibe-Coding</strong> is an emerging software development paradigm coined by Andrej Karpathy (co-founder of OpenAI) in February 2025. 
+                    It represents a fundamental shift in how we approach programming, where developers describe their desired outcomes in plain English rather than 
+                    writing code line-by-line. The AI takes your natural language prompts and generates, refines, and debugs the code automatically.
+                </p>
+                <p class="es-text hidden">
+                    <strong>Vibe-Coding</strong> es un nuevo paradigma de desarrollo de software acuñado por Andrej Karpathy (cofundador de OpenAI) en febrero de 2025. 
+                    Representa un cambio fundamental en cómo abordamos la programación, donde los desarrolladores describen sus objetivos deseados en inglés natural 
+                    en lugar de escribir código línea por línea. La IA toma tus indicaciones en lenguaje natural y genera, refina y depura el código automáticamente.
+                </p>
+            </div>
+
+            <div class="subsection">
+                <h3>
+                    <span class="en-text">Core Philosophy</span>
+                    <span class="es-text hidden">Filosofía Central</span>
+                </h3>
+                <p class="en-text">
+                    Karpathy's famous quote captures it perfectly: <em>"There's a new kind of coding I call 'vibe coding', where you fully give in to the vibes, 
+                    embrace exponentials, and forget that the code even exists."</em> This philosophy emphasizes:
+                </p>
+                <p class="es-text hidden">
+                    La famosa cita de Karpathy lo captura perfectamente: <em>"Hay una nueva forma de codificación que llamo 'vibe coding', donde te rindes completamente a las vibraciones, 
+                    abrazas los exponenciales y olvidas que el código existe."</em> Esta filosofía enfatiza:
+                </p>
+                <ul class="feature-list">
+                    <li><span class="en-text">Focus on <strong>outcomes</strong>, not implementation details</span><span class="es-text hidden">Enfoque en <strong>resultados</strong>, no en detalles de implementación</span></li>
+                    <li><span class="en-text">Rapid <strong>prototyping</strong> and iteration</span><span class="es-text hidden">Prototipado y iteración <strong>rápidos</strong></span></li>
+                    <li><span class="en-text">Democratization of app development</span><span class="es-text hidden">Democratización del desarrollo de aplicaciones</span></li>
+                    <li><span class="en-text">Leverage exponential AI progress</span><span class="es-text hidden">Aprovechar el progreso exponencial de la IA</span></li>
+                    <li><span class="en-text">Conversational debugging and refinement</span><span class="es-text hidden">Depuración y refinamiento conversacionales</span></li>
+                </ul>
+            </div>
+
+            <div class="subsection">
+                <h3>
+                    <span class="en-text">Vibe-Coding vs. Traditional Programming</span>
+                    <span class="es-text hidden">Vibe-Coding vs. Programación Tradicional</span>
+                </h3>
+                <table class="comparison-table">
+                    <tr>
+                        <th><span class="en-text">Aspect</span><span class="es-text hidden">Aspecto</span></th>
+                        <th><span class="en-text">Traditional</span><span class="es-text hidden">Tradicional</span></th>
+                        <th><span class="en-text">Vibe-Coding</span></th>
+                    </tr>
+                    <tr>
+                        <td><span class="en-text">Code Creation</span><span class="es-text hidden">Creación de Código</span></td>
+                        <td><span class="en-text">Manual line-by-line</span><span class="es-text hidden">Manual línea por línea</span></td>
+                        <td><span class="en-text">AI-generated from prompts</span><span class="es-text hidden">Generado por IA a partir de indicaciones</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="en-text">Developer Role</span><span class="es-text hidden">Rol del Desarrollador</span></td>
+                        <td><span class="en-text">Architect, Implementer, Debugger</span><span class="es-text hidden">Arquitecto, Implementador, Depurador</span></td>
+                        <td><span class="en-text">Prompter, Guide, Tester, Refiner</span><span class="es-text hidden">Indicador, Guía, Probador, Refinador</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="en-text">Expertise Required</span><span class="es-text hidden">Experiencia Requerida</span></td>
+                        <td><span class="en-text">High (syntax, languages, patterns)</span><span class="es-text hidden">Alta (sintaxis, lenguajes, patrones)</span></td>
+                        <td><span class="en-text">Lower (clear communication)</span><span class="es-text hidden">Menor (comunicación clara)</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="en-text">Speed</span><span class="es-text hidden">Velocidad</span></td>
+                        <td><span class="en-text">Methodical & slower</span><span class="es-text hidden">Metódico y más lento</span></td>
+                        <td><span class="en-text">Rapid, especially prototyping</span><span class="es-text hidden">Rápido, especialmente prototipado</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="en-text">Debugging</span><span class="es-text hidden">Depuración</span></td>
+                        <td><span class="en-text">Manual code comprehension</span><span class="es-text hidden">Comprensión manual del código</span></td>
+                        <td><span class="en-text">Conversational refinement</span><span class="es-text hidden">Refinamiento conversacional</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="en-text">Learning Curve</span><span class="es-text hidden">Curva de Aprendizaje</span></td>
+                        <td><span class="en-text">Steep</span><span class="es-text hidden">Pronunciada</span></td>
+                        <td><span class="en-text">Gentler, more accessible</span><span class="es-text hidden">Más suave, más accesible</span></td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="subsection">
+                <h3>
+                    <span class="en-text">Key Benefits</span>
+                    <span class="es-text hidden">Beneficios Clave</span>
+                </h3>
+                <ul class="feature-list">
+                    <li><span class="en-text"><strong>Accessibility:</strong> Non-technical creators can build apps without coding knowledge</span><span class="es-text hidden"><strong>Accesibilidad:</strong> Creadores no técnicos pueden crear aplicaciones sin conocimiento de programación</span></li>
+                    <li><span class="en-text"><strong>Speed:</strong> 10-100x faster prototyping compared to traditional development</span><span class="es-text hidden"><strong>Velocidad:</strong> Prototipado 10-100x más rápido comparado con desarrollo tradicional</span></li>
+                    <li><span class="en-text"><strong>Productivity:</strong> Developers focus on architecture and UX, not repetitive coding</span><span class="es-text hidden"><strong>Productividad:</strong> Los desarrolladores se enfocan en arquitectura y UX, no en codificación repetitiva</span></li>
+                    <li><span class="en-text"><strong>Experimentation:</strong> Test ideas and iterate rapidly without code overhead</span><span class="es-text hidden"><strong>Experimentación:</strong> Prueba ideas e itera rápidamente sin sobrecarga de código</span></li>
+                    <li><span class="en-text"><strong>Lower Barriers:</strong> Empower domain experts to build without hiring developers</span><span class="es-text hidden"><strong>Barreras Más Bajas:</strong> Empodera expertos de dominio para construir sin contratar desarrolladores</span></li>
+                </ul>
+            </div>
+
+            <div class="subsection">
+                <h3>
+                    <span class="en-text">Important Considerations</span>
+                    <span class="es-text hidden">Consideraciones Importantes</span>
+                </h3>
+                <ul class="feature-list">
+                    <li><span class="en-text"><strong>Technical Debt:</strong> Accepting AI-generated code without review can accumulate debt</span><span class="es-text hidden"><strong>Deuda Técnica:</strong> Aceptar código generado por IA sin revisión puede acumular deuda</span></li>
+                    <li><span class="en-text"><strong>Code Quality:</strong> AI output depends on prompt quality and model selection</span><span class="es-text hidden"><strong>Calidad del Código:</strong> La salida de IA depende de la calidad de la indicación y la selección del modelo</span></li>
+                    <li><span class="en-text"><strong>Security:</strong> Always test for vulnerabilities and follow best practices</span><span class="es-text hidden"><strong>Seguridad:</strong> Siempre prueba vulnerabilidades y sigue mejores prácticas</span></li>
+                    <li><span class="en-text"><strong>Learning:</strong> Understand the generated code to avoid cascading errors</span><span class="es-text hidden"><strong>Aprendizaje:</strong> Comprende el código generado para evitar errores en cascada</span></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- FUNDAMENTALS SECTION -->
+        <div id="fundamentals" class="content-section">
+            <h2 class="section-title">
+                <span class="en-text">Core Fundamentals</span>
+                <span class="es-text hidden">Fundamentos Básicos</span>
+            </h2>
+
+            <div class="subsection">
+                <h3>
+                    <span class="en-text">1. Understanding Large Language Models (LLMs)</span>
+                    <span class="es-text hidden">1. Entendiendo Modelos de Lenguaje Grande (LLMs)</span>
+                </h3>
+                <p class="en-text">
+                    LLMs like GPT-4, Claude, Gemini, and Copilot are neural networks trained on vast amounts of text data (including code). 
+                    They can understand context and generate coherent, functional code based on your descriptions.
+                </p>
+                <p class="es-text hidden">
+                    Los LLMs como GPT-4, Claude, Gemini y Copilot son redes neuronales entrenadas en grandes cantidades de datos de texto (incluido código). 
+                    Pueden entender el contexto y generar código coherente y funcional basado en tus descripciones.
+                </p>
+                <div class="example-card">
+                    <div class="example-title"><span class="en-text">How LLMs Work in Vibe-Coding:</span><span class="es-text hidden">Cómo funcionan los LLMs en Vibe-Coding:</span></div>
+                    <div class="code-block">
+User Input: "Create a login form with email and password"
+    ↓
+LLM Analysis: Interprets intent, selects tech stack
+    ↓
+Code Generation: Produces HTML, CSS, JavaScript
+    ↓
+Refinement Loop: You provide feedback, LLM adjusts
+    ↓
+Result: Working feature deployed
+                    </div>
+                </div>
+            </div>
+
+            <div class="subsection">
+                <h3>
+                    <span class="en-text">2. Natural Language Prompts</span>
+                    <span class="es-text hidden">2. Indicaciones en Lenguaje Natural</span>
+                </h3>
+                <p class="en-text">
+                    The quality of your prompts directly affects the AI output. Clear, specific prompts yield better results than vague instructions.
+                </p>
+                <p class="es-text hidden">
+                    La calidad de tus indicaciones afecta directamente la salida de la IA. Las indicaciones claras y específicas producen mejores resultados que las instrucciones vagas.
+                </p>
+
+                <h4 style="color: #1a7480; margin-top: 15px;">
+                    <span class="en-text">❌ Poor Prompt Example:</span>
+                    <span class="es-text hidden">❌ Ejemplo de Indicación Pobre:</span>
+                </h4>
+                <div class="code-block">
+"Create a website"
+                </div>
+
+                <h4 style="color: #4ecdc4; margin-top: 15px;">
+                    <span class="en-text">✅ Good Prompt Example:</span>
+                    <span class="es-text hidden">✅ Ejemplo de Indicación Buena:</span>
+                </h4>
+                <div class="code-block">
+"Create a responsive e-commerce website with:
+- Header with logo and navigation
+- Product grid displaying items with images, names, prices
+- Add to cart functionality
+- Shopping cart sidebar
+- Mobile-friendly design using Tailwind CSS
+- Dark mode support"
+                </div>
+
+                <h4 style="color: #4ecdc4; margin-top: 15px;">
+                    <span class="en-text">Prompt Engineering Best Practices:</span>
+                    <span class="es-text hidden">Mejores Prácticas de Ingeniería de Indicaciones:</span>
+                </h4>
+                <ul class="feature-list">
+                    <li><span class="en-text"><strong>Be specific:</strong> Include details about functionality, design, tech stack</span><span class="es-text hidden"><strong>Sé específico:</strong> Incluye detalles sobre funcionalidad, diseño, stack tecnológico</span></li>
+                    <li><span class="en-text"><strong>Use examples:</strong> Show what you want (wireframes, screenshots, references)</span><span class="es-text hidden"><strong>Usa ejemplos:</strong> Muestra lo que quieres (wireframes, capturas, referencias)</span></li>
+                    <li><span class="en-text"><strong>Break it down:</strong> Complex requests should be split into smaller steps</span><span class="es-text hidden"><strong>Divídelo:</strong> Las solicitudes complejas deben dividirse en pasos más pequeños</span></li>
+                    <li><span class="en-text"><strong>Add context:</strong> Mention use case, target audience, constraints</span><span class="es-text hidden"><strong>Añade contexto:</strong> Menciona caso de uso, audiencia objetivo, restricciones</span></li>
+                    <li><span class="en-text"><strong>Request tests:</strong> Ask for unit tests, error handling, validation</span><span class="es-text hidden"><strong>Solicita pruebas:</strong> Pide pruebas unitarias, manejo de errores, validación</span></li>
+                </ul>
+            </div>
+
+            <div class="subsection">
+                <h3>
+                    <span class="en-text">3. The Iterative Refinement Loop</span>
+                    <span class="es-text hidden">3. El Bucle de Refinamiento Iterativo</span>
+                </h3>
+                <p class="en-text">
+                    Vibe-coding is not a one-shot process. It's conversational and iterative:
+                </p>
+                <p class="es-text hidden">
+                    Vibe-coding no es un proceso de una sola vez. Es conversacional e iterativo:
+                </p>
+                <div class="example-card">
+                    <div class="example-title"><span class="en-text">The Refinement Cycle:</span><span class="es-text hidden">El Ciclo de Refinamiento:</span></div>
+                    <ol style="margin-left: 20px; line-height: 2;">
+                        <li><span class="en-text">Describe desired feature in natural language</span><span class="es-text hidden">Describe la característica deseada en lenguaje natural</span></li>
+                        <li><span class="en-text">AI generates initial code implementation</span><span class="es-text hidden">La IA genera la implementación del código inicial</span></li>
+                        <li><span class="en-text">Review generated code and test functionality</span><span class="es-text hidden">Revisa el código generado y prueba la funcionalidad</span></li>
+                        <li><span class="en-text">Identify improvements or issues</span><span class="es-text hidden">Identifica mejoras o problemas</span></li>
+                        <li><span class="en-text">Ask AI for refinements (performance, features, design)</span><span class="es-text hidden">Pide a la IA refinamientos (rendimiento, características, diseño)</span></li>
+                        <li><span class="en-text">Repeat until satisfied with result</span><span class="es-text hidden">Repite hasta estar satisfecho con el resultado</span></li>
+                    </ol>
+                </div>
+            </div>
+
+            <div class="subsection">
+                <h3>
+                    <span class="en-text">4. Two Levels of Vibe-Coding</span>
+                    <span class="es-text hidden">4. Dos Niveles de Vibe-Coding</span>
+                </h3>
+                <p class="en-text"><strong>Low-Level (Micro):</strong> Iterative refinement of specific code blocks or features within your IDE</p>
+                <p class="es-text hidden"><strong>Bajo Nivel (Micro):</strong> Refinamiento iterativo de bloques de código específicos o características dentro de su IDE</p>
+                <ul class="feature-list">
+                    <li><span class="en-text">Use case: Implementing a single function or component</span><span class="es-text hidden">Caso de uso: Implementar una función o componente único</span></li>
+                    <li><span class="en-text">Tools: Cursor, GitHub Copilot, Codeium</span><span class="es-text hidden">Herramientas: Cursor, GitHub Copilot, Codeium</span></li>
+                    <li><span class="en-text">Time frame: Minutes to hours</span><span class="es-text hidden">Marco temporal: Minutos a horas</span></li>
+                </ul>
+
+                <p style="margin-top: 20px;"><strong><span class="en-text">High-Level (Macro):</span><span class="es-text hidden">Alto Nivel (Macro):</span></strong> <span class="en-text">End-to-end app generation from concept to deployment</span><span class="es-text hidden">Generación de aplicación de extremo a extremo desde el concepto hasta la implementación</span></p>
+                <ul class="feature-list">
+                    <li><span class="en-text">Use case: Building complete applications from scratch</span><span class="es-text hidden">Caso de uso: Construir aplicaciones completas desde cero</span></li>
+                    <li><span class="en-text">Tools: Replit, Bolt, Lovable, Emergent, Google AI Studio</span><span class="es-text hidden">Herramientas: Replit, Bolt, Lovable, Emergent, Google AI Studio</span></li>
+                    <li><span class="en-text">Time frame: Hours to days</span><span class="es-text hidden">Marco temporal: Horas a días</span></li>
+                </ul>
+            </div>
+
+            <div class="subsection">
+                <h3>
+                    <span class="en-text">5. Key Mindset Shifts</span>
+                    <span class="es-text hidden">5. Cambios de Mentalidad Clave</span>
+                </h3>
+                <table class="comparison-table">
+                    <tr>
+                        <th><span class="en-text">Traditional Developer</span><span class="es-text hidden">Desarrollador Tradicional</span></th>
+                        <th><span class="en-text">Vibe-Coder</span></th>
+                    </tr>
+                    <tr>
+                        <td><span class="en-text">Focuses on syntax and implementation</span><span class="es-text hidden">Se enfoca en sintaxis e implementación</span></td>
+                        <td><span class="en-text">Focuses on outcomes and user experience</span><span class="es-text hidden">Se enfoca en resultados y experiencia de usuario</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="en-text">Debugs by reading code</span><span class="es-text hidden">Depura leyendo código</span></td>
+                        <td><span class="en-text">Debugs through conversation with AI</span><span class="es-text hidden">Depura a través de conversación con IA</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="en-text">Plans extensively before coding</span><span class="es-text hidden">Planifica extensamente antes de codificar</span></td>
+                        <td><span class="en-text">Plans at high level, prototypes rapidly</span><span class="es-text hidden">Planifica a nivel alto, prototipa rápidamente</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="en-text">Values code elegance</span><span class="es-text hidden">Valora la elegancia del código</span></td>
+                        <td><span class="en-text">Values working solutions and speed</span><span class="es-text hidden">Valora soluciones de trabajo y velocidad</span></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <!-- TOOLS SECTION -->
+        <div id="tools" class="content-section">
+            <h2 class="section-title">
+                <span class="en-text">Top Vibe-Coding Tools (2026)</span>
+                <span class="es-text hidden">Herramientas Top de Vibe-Coding (2026)</span>
+            </h2>
+
+            <h3 style="margin-top: 30px; color: var(--color-primary);">
+                <span class="en-text">🎯 For Complete Beginners (No-Code)</span>
+                <span class="es-text hidden">🎯 Para Principiantes Totales (Sin Código)</span>
+            </h3>
+
+            <div class="tool-card">
+                <div class="tool-name">1. Bolt.new</div>
+                <span class="tool-level level-beginner"><span class="en-text">Beginner</span><span class="es-text hidden">Principiante</span></span>
+                <div class="tool-description">
+                    <span class="en-text">Generates complete full-stack web applications from single prompts with instant preview and one-click deployment.</span>
+                    <span class="es-text hidden">Genera aplicaciones web full-stack completas a partir de indicaciones únicas con vista previa instantánea e implementación de un clic.</span>
+                </div>
+                <ul class="feature-list">
+                    <li><span class="en-text">One-prompt app generation</span><span class="es-text hidden">Generación de aplicación de una indicación</span></li>
+                    <li><span class="en-text">Real-time preview</span><span class="es-text hidden">Vista previa en tiempo real</span></li>
+                    <li><span class="en-text">Instant deployment</span><span class="es-text hidden">Implementación instantánea</span></li>
+                    <li><span class="en-text">Iteration through natural language</span><span class="es-text hidden">Iteración a través del lenguaje natural</span></li>
+                </ul>
+                <a href="https://bolt.new" class="tool-link" target="_blank"><span class="en-text">Visit Bolt.new</span><span class="es-text hidden">Visitar Bolt.new</span></a>
+            </div>
+
+            <div class="tool-card">
+                <div class="tool-name">2. Lovable (formerly Loaf)</div>
+                <span class="tool-level level-beginner"><span class="en-text">Beginner</span><span class="es-text hidden">Principiante</span></span>
+                <div class="tool-description">
+                    <span class="en-text">AI-powered full-stack development platform with built-in Supabase backend, perfect for production apps with databases.</span>
+                    <span class="es-text hidden">Plataforma de desarrollo full-stack impulsada por IA con backend Supabase integrado, perfecta para aplicaciones de producción con bases de datos.</span>
+                </div>
+                <ul class="feature-list">
+                    <li><span class="en-text">Full-stack generation with databases</span><span class="es-text hidden">Generación full-stack con bases de datos</span></li>
+                    <li><span class="en-text">User authentication built-in</span><span class="es-text hidden">Autenticación de usuario integrada</span></li>
+                    <li><span class="en-text">Supabase integration</span><span class="es-text hidden">Integración con Supabase</span></li>
+                    <li><span class="en-text">Production-ready features</span><span class="es-text hidden">Características listas para producción</span></li>
+                </ul>
+                <a href="https://lovable.dev" class="tool-link" target="_blank"><span class="en-text">Visit Lovable</span><span class="es-text hidden">Visitar Lovable</span></a>
+            </div>
+
+            <div class="tool-card">
+                <div class="tool-name">3. Replit</div>
+                <span class="tool-level level-beginner"><span class="en-text">Beginner</span><span class="es-text hidden">Principiante</span></span>
+                <div class="tool-description">
+                    <span class="en-text">Cloud-based coding environment with AI assistance for instant prototyping and deployment across any language.</span>
+                    <span class="es-text hidden">Entorno de codificación basado en la nube con asistencia de IA para prototipado instantáneo e implementación en cualquier lenguaje.</span>
+                </div>
+                <ul class="feature-list">
+                    <li><span class="en-text">Browser-based IDE</span><span class="es-text hidden">IDE basado en navegador</span></li>
+                    <li><span class="en-text">Multi-language support</span><span class="es-text hidden">Soporte multiidioma</span></li>
+                    <li><span class="en-text">Instant deployments</span><span class="es-text hidden">Implementaciones instantáneas</span></li>
+                    <li><span class="en-text">Collaborative coding</span><span class="es-text hidden">Codificación colaborativa</span></li>
+                </ul>
+                <a href="https://replit.com" class="tool-link" target="_blank"><span class="en-text">Visit Replit</span><span class="es-text hidden">Visitar Replit</span></a>
+            </div>
+
+            <div class="tool-card">
+                <div class="tool-name">4. Google AI Studio (formerly Opal)</div>
+                <span class="tool-level level-beginner"><span class="en-text">Beginner</span><span class="es-text hidden">Principiante</span></span>
+                <div class="tool-description">
+                    <span class="en-text">Google's no-code platform leveraging Gemini for app generation with visual development interface.</span>
+                    <span class="es-text hidden">Plataforma sin código de Google que aprovecha Gemini para la generación de aplicaciones con interfaz de desarrollo visual.</span>
+                </div>
+                <ul class="feature-list">
+                    <li><span class="en-text">Free access to Google models</span><span class="es-text hidden">Acceso gratuito a modelos de Google</span></li>
+                    <li><span class="en-text">Visual builder interface</span><span class="es-text hidden">Interfaz del constructor visual</span></li>
+                    <li><span class="en-text">Gemini integration</span><span class="es-text hidden">Integración con Gemini</span></li>
+                    <li><span class="en-text">Paint-by-numbers approach</span><span class="es-text hidden">Enfoque de pintar por números</span></li>
+                </ul>
+                <a href="https://aistudio.google.com" class="tool-link" target="_blank"><span class="en-text">Visit Google AI Studio</span><span class="es-text hidden">Visitar Google AI Studio</span></a>
+            </div>
+
+            <h3 style="margin-top: 40px; color: var(--color-primary);">
+                <span class="en-text">💼 For Developers (IDE-Based)</span>
+                <span class="es-text hidden">💼 Para Desarrolladores (Basado en IDE)</span>
+            </h3>
+
+            <div class="tool-card">
+                <div class="tool-name">1. Cursor</div>
+                <span class="tool-level level-intermediate"><span class="en-text">Intermediate</span><span class="es-text hidden">Intermedio</span></span>
+                <div class="tool-description">
+                    <span class="en-text">Advanced AI-powered code editor built for vibe-coding with multi-model support, file-specific edits, and intelligent debugging.</span>
+                    <span class="es-text hidden">Editor de código avanzado impulsado por IA construido para vibe-coding con soporte multimodelo, ediciones específicas de archivo y depuración inteligente.</span>
+                </div>
+                <ul class="feature-list">
+                    <li><span class="en-text">Works with GPT-4, Claude, Gemini, xAI</span><span class="es-text hidden">Funciona con GPT-4, Claude, Gemini, xAI</span></li>
+                    <li><span class="en-text">File-specific code changes</span><span class="es-text hidden">Cambios de código específicos del archivo</span></li>
+                    <li><span class="en-text">Codebase understanding</span><span class="es-text hidden">Comprensión de base de código</span></li>
+                    <li><span class="en-text">Chat and inline editing</span><span class="es-text hidden">Chat y edición en línea</span></li>
+                    <li><span class="en-text">Debugging agent</span><span class="es-text hidden">Agente de depuración</span></li>
+                </ul>
+                <a href="https://www.cursor.com" class="tool-link" target="_blank"><span class="en-text">Visit Cursor</span><span class="es-text hidden">Visitar Cursor</span></a>
+            </div>
+
+            <div class="tool-card">
+                <div class="tool-name">2. Windsurf (by Codeium)</div>
+                <span class="tool-level level-intermediate"><span class="en-text">Intermediate</span><span class="es-text hidden">Intermedio</span></span>
+                <div class="tool-description">
+                    <span class="en-text">Codeium's powerful IDE with multi-file editing, project understanding, and real-time code generation.</span>
+                    <span class="es-text hidden">IDE potente de Codeium con edición de múltiples archivos, comprensión de proyectos y generación de código en tiempo real.</span>
+                </div>
+                <ul class="feature-list">
+                    <li><span class="en-text">Multi-file project understanding</span><span class="es-text hidden">Comprensión de proyecto multiarchivo</span></li>
+                    <li><span class="en-text">Real-time code suggestions</span><span class="es-text hidden">Sugerencias de código en tiempo real</span></li>
+                    <li><span class="en-text">Fast performance</span><span class="es-text hidden">Rendimiento rápido</span></li>
+                    <li><span class="en-text">Free tier available</span><span class="es-text hidden">Nivel gratuito disponible</span></li>
+                </ul>
+                <a href="https://codeium.com/windsurf" class="tool-link" target="_blank"><span class="en-text">Visit Windsurf</span><span class="es-text hidden">Visitar Windsurf</span></a>
+            </div>
+
+            <div class="tool-card">
+                <div class="tool-name">3. GitHub Copilot</div>
+                <span class="tool-level level-intermediate"><span class="en-text">Intermediate</span><span class="es-text hidden">Intermedio</span></span>
+                <div class="tool-description">
+                    <span class="en-text">GitHub's AI pair programmer integrated into VS Code and JetBrains IDEs with chat and inline completions.</span>
+                    <span class="es-text hidden">Programador de pares de IA de GitHub integrado en VS Code e IDE de JetBrains con chat y completaciones en línea.</span>
+                </div>
+                <ul class="feature-list">
+                    <li><span class="en-text">Integrated into popular IDEs</span><span class="es-text hidden">Integrado en IDE populares</span></li>
+                    <li><span class="en-text">OpenAI GPT-4 powered</span><span class="es-text hidden">Impulsado por OpenAI GPT-4</span></li>
+                    <li><span class="en-text">Code completion and chat</span><span class="es-text hidden">Finalización de código y chat</span></li>
+                    <li><span class="en-text">Test generation</span><span class="es-text hidden">Generación de pruebas</span></li>
+                </ul>
+                <a href="https://github.com/features/copilot" class="tool-link" target="_blank"><span class="en-text">Visit GitHub Copilot</span><span class="es-text hidden">Visitar GitHub Copilot</span></a>
+            </div>
+
+            <h3 style="margin-top: 40px; color: var(--color-primary);">
+                <span class="en-text">🚀 For Full-Stack Apps (Advanced)</span>
+                <span class="es-text hidden">🚀 Para Aplicaciones Full-Stack (Avanzado)</span>
+            </h3>
+
+            <div class="tool-card">
+                <div class="tool-name">1. Emergent</div>
+                <span class="tool-level level-advanced"><span class="en-text">Advanced</span><span class="es-text hidden">Avanzado</span></span>
+                <div class="tool-description">
+                    <span class="en-text">Advanced full-stack platform for building complete applications including SaaS, mobile apps, dashboards with automatic deployment.</span>
+                    <span class="es-text hidden">Plataforma full-stack avanzada para construir aplicaciones completas incluyendo SaaS, aplicaciones móviles, paneles con implementación automática.</span>
+                </div>
+                <ul class="feature-list">
+                    <li><span class="en-text">Full-stack architecture</span><span class="es-text hidden">Arquitectura full-stack</span></li>
+                    <li><span class="en-text">Backend, database, API automation</span><span class="es-text hidden">Automatización de backend, base de datos, API</span></li>
+                    <li><span class="en-text">Mobile app generation</span><span class="es-text hidden">Generación de aplicación móvil</span></li>
+                    <li><span class="en-text">Production deployment</span><span class="es-text hidden">Implementación en producción</span></li>
+                </ul>
+                <a href="https://www.emergent.ai" class="tool-link" target="_blank"><span class="en-text">Visit Emergent</span><span class="es-text hidden">Visitar Emergent</span></a>
+            </div>
+
+            <div class="tool-card">
+                <div class="tool-name">2. Base44</div>
+                <span class="tool-level level-intermediate"><span class="en-text">Intermediate</span><span class="es-text hidden">Intermedio</span></span>
+                <div class="tool-description">
+                    <span class="en-text">Platform for rapid full-stack application development with database management and authentication.</span>
+                    <span class="es-text hidden">Plataforma para desarrollo rápido de aplicaciones full-stack con gestión de bases de datos y autenticación.</span>
+                </div>
+                <ul class="feature-list">
+                    <li><span class="en-text">Rapid prototyping</span><span class="es-text hidden">Prototipado rápido</span></li>
+                    <li><span class="en-text">Backend auto-generation</span><span class="es-text hidden">Auto-generación de backend</span></li>
+                    <li><span class="en-text">Database included</span><span class="es-text hidden">Base de datos incluida</span></li>
+                    <li><span class="en-text">Auth management</span><span class="es-text hidden">Gestión de autenticación</span></li>
+                </ul>
+                <a href="https://www.base44.com" class="tool-link" target="_blank"><span class="en-text">Visit Base44</span><span class="es-text hidden">Visitar Base44</span></a>
+            </div>
+
+            <div class="tool-card">
+                <div class="tool-name">3. v0 by Vercel</div>
+                <span class="tool-level level-beginner"><span class="en-text">Beginner to Intermediate</span><span class="es-text hidden">Principiante a Intermedio</span></span>
+                <div class="tool-description">
+                    <span class="en-text">AI component generator for building UI-rich applications with shadcn/ui and React integration.</span>
+                    <span class="es-text hidden">Generador de componentes de IA para construir aplicaciones ricas en UI con integración de shadcn/ui y React.</span>
+                </div>
+                <ul class="feature-list">
+                    <li><span class="en-text">UI component generation</span><span class="es-text hidden">Generación de componentes de UI</span></li>
+                    <li><span class="en-text">shadcn/ui integration</span><span class="es-text hidden">Integración de shadcn/ui</span></li>
+                    <li><span class="en-text">React-based</span><span class="es-text hidden">Basado en React</span></li>
+                    <li><span class="en-text">Instant preview</span><span class="es-text hidden">Vista previa instantánea</span></li>
+                </ul>
+                <a href="https://v0.dev" class="tool-link" target="_blank"><span class="en-text">Visit v0</span><span class="es-text hidden">Visitar v0</span></a>
+            </div>
+
+            <h3 style="margin-top: 40px; color: var(--color-primary);">
+                <span class="en-text">📊 Tool Comparison Matrix</span>
+                <span class="es-text hidden">📊 Matriz de Comparación de Herramientas</span>
+            </h3>
+            <table class="comparison-table">
+                <tr>
+                    <th><span class="en-text">Tool</span><span class="es-text hidden">Herramienta</span></th>
+                    <th><span class="en-text">Best For</span><span class="es-text hidden">Mejor Para</span></th>
+                    <th><span class="en-text">Skill Level</span><span class="es-text hidden">Nivel de Habilidad</span></th>
+                    <th><span class="en-text">Speed</span><span class="es-text hidden">Velocidad</span></th>
+                    <th><span class="en-text">Cost</span><span class="es-text hidden">Costo</span></th>
+                </tr>
+                <tr>
+                    <td>Bolt.new</td>
+                    <td><span class="en-text">Quick web apps</span><span class="es-text hidden">Aplicaciones web rápidas</span></td>
+                    <td><span class="en-text">Beginner</span><span class="es-text hidden">Principiante</span></td>
+                    <td>⚡⚡⚡</td>
+                    <td><span class="en-text">Free</span><span class="es-text hidden">Gratis</span></td>
+                </tr>
+                <tr>
+                    <td>Cursor</td>
+                    <td><span class="en-text">Professional dev</span><span class="es-text hidden">Desarrollo profesional</span></td>
+                    <td><span class="en-text">Intermediate+</span><span class="es-text hidden">Intermedio+</span></td>
+                    <td>⚡⚡</td>
+                    <td>$<span class="en-text">$20/mo</span><span class="es-text hidden">$20/mes</span></td>
+                </tr>
+                <tr>
+                    <td>Lovable</td>
+                    <td><span class="en-text">Full-stack apps</span><span class="es-text hidden">Aplicaciones full-stack</span></td>
+                    <td><span class="en-text">Beginner</span><span class="es-text hidden">Principiante</span></td>
+                    <td>⚡⚡⚡</td>
+                    <td><span class="en-text">Free/Paid</span><span class="es-text hidden">Gratuito/Pago</span></td>
+                </tr>
+                <tr>
+                    <td>Replit</td>
+                    <td><span class="en-text">Learning & prototypes</span><span class="es-text hidden">Aprendizaje y prototipos</span></td>
+                    <td><span class="en-text">Beginner+</span><span class="es-text hidden">Principiante+</span></td>
+                    <td>⚡⚡⚡</td>
+                    <td><span class="en-text">Free/Paid</span><span class="es-text hidden">Gratuito/Pago</span></td>
+                </tr>
+                <tr>
+                    <td>Emergent</td>
+                    <td><span class="en-text">Enterprise apps</span><span class="es-text hidden">Aplicaciones empresariales</span></td>
+                    <td><span class="en-text">Advanced</span><span class="es-text hidden">Avanzado</span></td>
+                    <td>⚡⚡</td>
+                    <td><span class="en-text">Premium</span><span class="es-text hidden">Premium</span></td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- EXAMPLES SECTION -->
+        <div id="examples" class="content-section">
+            <h2 class="section-title">
+                <span class="en-text">Real-World Examples</span>
+                <span class="es-text hidden">Ejemplos del Mundo Real</span>
+            </h2>
+
+            <div class="subsection">
+                <h3>
+                    <span class="en-text">Example 1: Simple Todo List App</span>
+                    <span class="es-text hidden">Ejemplo 1: Aplicación de Lista de Tareas Simple</span>
+                </h3>
+                <h4 style="color: #4ecdc4; margin-top: 15px;">
+                    <span class="en-text">📝 Prompt:</span>
+                    <span class="es-text hidden">📝 Indicación:</span>
+                </h4>
+                <div class="code-block">
+"Create a simple todo list web app with the following features:
+- Add new todo items via text input
+- Mark items as complete with a checkbox
+- Delete items with a button
+- Display count of completed vs remaining items
+- Save todos to browser storage
+- Dark mode toggle
+- Responsive mobile design
+- Use vanilla JavaScript (no frameworks)"
+                </div>
+
+                <h4 style="color: #4ecdc4; margin-top: 15px;">
+                    <span class="en-text">🎯 Expected Output:</span>
+                    <span class="es-text hidden">🎯 Salida Esperada:</span>
+                </h4>
+                <ul class="feature-list">
+                    <li><span class="en-text">HTML structure with form and list</span><span class="es-text hidden">Estructura HTML con formulario y lista</span></li>
+                    <li><span class="en-text">CSS styling for responsive layout</span><span class="es-text hidden">Estilo CSS para diseño receptivo</span></li>
+                    <li><span class="en-text">JavaScript event handlers</span><span class="es-text hidden">Manejadores de eventos JavaScript</span></li>
+                    <li><span class="en-text">LocalStorage integration</span><span class="es-text hidden">Integración de LocalStorage</span></li>
+                    <li><span class="en-text">Dark mode CSS variables</span><span class="es-text hidden">Variables CSS de modo oscuro</span></li>
+                </ul>
+
+                <h4 style="color: #ff6b6b; margin-top: 15px;">
+                    <span class="en-text">✨ First Iteration Refinement:</span>
+                    <span class="es-text hidden">✨ Refinamiento de Primera Iteración:</span>
+                </h4>
+                <div class="code-block">
+"Can you modify the app to:
+1. Add due dates for each todo
+2. Sort by due date (earliest first)
+3. Add priority levels (High/Medium/Low) with color coding
+4. Add a search/filter box
+5. Include a 'Clear completed' button"
+                </div>
+            </div>
+
+            <div class="subsection">
+                <h3>
+                    <span class="en-text">Example 2: Dashboard with Real Data</span>
+                    <span class="es-text hidden">Ejemplo 2: Panel con Datos Reales</span>
+                </h3>
+                <h4 style="color: #4ecdc4; margin-top: 15px;">
+                    <span class="en-text">📝 Prompt:</span>
+                    <span class="es-text hidden">📝 Indicación:</span>
+                </h4>
+                <div class="code-block">
+"Create a sales analytics dashboard with:
+- Header showing current month sales, revenue, and growth rate
+- Line chart showing monthly sales trends (last 12 months)
+- Pie chart showing sales by product category
+- Table of top 10 products by revenue
+- KPI cards showing: Total Revenue, New Customers, Conversion Rate, Avg Order Value
+- Responsive grid layout
+- Color scheme: professional blue and white
+- Sample data for demonstration"
+                </div>
+
+                <h4 style="color: #ff6b6b; margin-top: 15px;">
+                    <span class="en-text">✨ Refinement Loop:</span>
+                    <span class="es-text hidden">✨ Bucle de Refinamiento:</span>
+                </h4>
+                <div class="code-block">
+Round 1: "Add a date range picker to filter data"
+Round 2: "Make the charts interactive - click legend items to toggle visibility"
+Round 3: "Export the dashboard as CSV and PDF"
+Round 4: "Add real-time updates every 30 seconds"
+                </div>
+            </div>
+
+            <div class="subsection">
+                <h3>
+                    <span class="en-text">Example 3: E-commerce Product Page</span>
+                    <span class="es-text hidden">Ejemplo 3: Página de Producto de E-commerce</span>
+                </h3>
+                <h4 style="color: #4ecdc4; margin-top: 15px;">
+                    <span class="en-text">📝 Initial Prompt:</span>
+                    <span class="es-text hidden">📝 Indicación Inicial:</span>
+                </h4>
+                <div class="code-block">
+"Build an e-commerce product page with:
+- Product image gallery (main image + 4 thumbnails)
+- Product info: name, price, rating (5 stars), description
+- Size/color selection dropdowns
+- Quantity selector
+- Add to cart button
+- Customer reviews section
+- Related products carousel
+- Mobile responsive
+- Modern, clean design"
+                </div>
+
+                <h4 style="color: #ff6b6b; margin-top: 15px;">
+                    <span class="en-text">Common Refinement Requests:</span>
+                    <span class="es-text hidden">Solicitudes de Refinamiento Comunes:</span>
+                </h4>
+                <ul class="feature-list">
+                    <li><span class="en-text">"Add zoom functionality to product images"</span><span class="es-text hidden">"Añadir funcionalidad de zoom a las imágenes del producto"</span></li>
+                    <li><span class="en-text">"Include a wishlist/save for later button"</span><span class="es-text hidden">"Incluir botón de lista de deseos/guardar para más tarde"</span></li>
+                    <li><span class="en-text">"Show inventory status and delivery options"</span><span class="es-text hidden">"Mostrar estado de inventario y opciones de entrega"</span></li>
+                    <li><span class="en-text">"Add customer Q&A section below reviews"</span><span class="es-text hidden">"Agregar sección de preguntas y respuestas de clientes debajo de las reseñas"</span></li>
+                    <li><span class="en-text">"Implement variant pricing (XL size is $5 more)"</span><span class="es-text hidden">"Implementar precios variantes (el tamaño XL cuesta $5 más)"</span></li>
+                </ul>
+            </div>
+
+            <div class="subsection">
+                <h3>
+                    <span class="en-text">Example 4: User Authentication System</span>
+                    <span class="es-text hidden">Ejemplo 4: Sistema de Autenticación de Usuario</span>
+                </h3>
+                <h4 style="color: #4ecdc4; margin-top: 15px;">
+                    <span class="en-text">📝 Comprehensive Prompt:</span>
+                    <span class="es-text hidden">📝 Indicación Integral:</span>
+                </h4>
+                <div class="code-block">
+"Create a user authentication system with:
+FRONTEND:
+- Login page (email/password)
+- Sign-up page with form validation
+- Password reset functionality
+- User dashboard showing profile info
+- Logout functionality
+- Remember me checkbox
+
+BACKEND (Node.js + Express):
+- Endpoint for user registration
+- Endpoint for login
+- JWT token generation and validation
+- Password hashing with bcrypt
+- Email verification
+- Protected routes
+
+DATABASE (MongoDB):
+- Users collection with: email, password_hash, created_at
+- Email verification status
+
+SECURITY:
+- CORS enabled
+- Rate limiting on login attempts
+- SQL injection prevention
+- XSS protection"
+                </div>
+
+                <h4 style="color: #ff6b6b; margin-top: 15px;">
+                    <span class="en-text">Iterative Enhancements:</span>
+                    <span class="es-text hidden">Mejoras Iterativas:</span>
+                </h4>
+                <ul class="feature-list">
+                    <li><span class="en-text">Add OAuth 2.0 (Google, GitHub login)</span><span class="es-text hidden">Añadir OAuth 2.0 (inicio de sesión de Google, GitHub)</span></li>
+                    <li><span class="en-text">Two-factor authentication (2FA)</span><span class="es-text hidden">Autenticación de dos factores (2FA)</span></li>
+                    <li><span class="en-text">Session management and timeout</span><span class="es-text hidden">Gestión de sesiones y tiempo de espera</span></li>
+                    <li><span class="en-text">User role-based access control</span><span class="es-text hidden">Control de acceso basado en rol de usuario</span></li>
+                    <li><span class="en-text">Admin dashboard for user management</span><span class="es-text hidden">Panel de administrador para gestión de usuarios</span></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- LEARNING PATH SECTION -->
+        <div id="learning-path" class="content-section">
+            <h2 class="section-title">
+                <span class="en-text">Complete Learning Path</span>
+                <span class="es-text hidden">Ruta de Aprendizaje Completa</span>
+            </h2>
+
+            <div class="subsection">
+                <h3>
+                    <span class="en-text">🟢 Level 1: Beginner Fundamentals (Week 1-2)</span>
+                    <span class="es-text hidden">🟢 Nivel 1: Fundamentos de Principiante (Semana 1-2)</span>
+                </h3>
+
+                <h4 style="margin-top: 15px; color: #1a7480;">
+                    <span class="en-text">Topics to Master:</span>
+                    <span class="es-text hidden">Temas a Dominar:</span>
+                </h4>
+                <ul class="feature-list">
+                    <li><span class="en-text">What are LLMs and how they work</span><span class="es-text hidden">Qué son los LLMs y cómo funcionan</span></li>
+                    <li><span class="en-text">Difference between vibe-coding and traditional programming</span><span class="es-text hidden">Diferencia entre vibe-coding y programación tradicional</span></li>
+                    <li><span class="en-text">Introduction to 2-3 beginner tools (Bolt, Lovable)</span><span class="es-text hidden">Introducción a 2-3 herramientas para principiantes (Bolt, Lovable)</span></li>
+                    <li><span class="en-text">Basic prompt writing (clear, specific instructions)</span><span class="es-text hidden">Escritura de indicaciones básicas (instrucciones claras y específicas)</span></li>
+                    <li><span class="en-text">Create your first 3-5 small apps</span><span class="es-text hidden">Crea tus primeras 3-5 aplicaciones pequeñas</span></li>
+                </ul>
+
+                <h4 style="margin-top: 15px; color: #1a7480;">
+                    <span class="en-text">Hands-On Projects:</span>
+                    <span class="es-text hidden">Proyectos Prácticos:</span>
+                </h4>
+                <ol style="margin-left: 20px;">
+                    <li><span class="en-text">Simple calculator app</span><span class="es-text hidden">Aplicación de calculadora simple</span></li>
+                    <li><span class="en-text">Weather widget</span><span class="es-text hidden">Widget de clima</span></li>
+                    <li><span class="en-text">Note-taking app</span><span class="es-text hidden">Aplicación para tomar notas</span></li>
+                    <li><span class="en-text">Personal portfolio website</span><span class="es-text hidden">Sitio web de portafolio personal</span></li>
+                    <li><span class="en-text">Quiz game</span><span class="es-text hidden">Juego de preguntas y respuestas</span></li>
+                </ol>
+
+                <h4 style="margin-top: 15px; color: #1a7480;">
+                    <span class="en-text">Resources:</span>
+                    <span class="es-text hidden">Recursos:</span>
+                </h4>
+                <ul class="feature-list">
+                    <li><a href="https://bolt.new" class="resource-link" target="_blank">Bolt.new Tutorials</a></li>
+                    <li><a href="https://lovable.dev/docs" class="resource-link" target="_blank">Lovable Documentation</a></li>
+                    <li><a href="https://www.youtube.com/results?search_query=vibe+coding+tutorial" class="resource-link" target="_blank">YouTube Vibe-Coding Tutorials</a></li>
+                </ul>
+            </div>
+
+            <div class="subsection">
+                <h3>
+                    <span class="en-text">🟡 Level 2: Intermediate Concepts (Week 3-6)</span>
+                    <span class="es-text hidden">🟡 Nivel 2: Conceptos Intermedios (Semana 3-6)</span>
+                </h3>
+
+                <h4 style="margin-top: 15px; color: #1a7480;">
+                    <span class="en-text">Topics to Master:</span>
+                    <span class="es-text hidden">Temas a Dominar:</span>
+                </h4>
+                <ul class="feature-list">
+                    <li><span class="en-text">Advanced prompt engineering (context, examples, constraints)</span><span class="es-text hidden">Ingeniería de indicaciones avanzada (contexto, ejemplos, restricciones)</span></li>
+                    <li><span class="en-text">Understanding generated code and debugging strategies</span><span class="es-text hidden">Comprensión del código generado y estrategias de depuración</span></li>
+                    <li><span class="en-text">Multi-feature applications with state management</span><span class="es-text hidden">Aplicaciones multifuncionales con gestión de estado</span></li>
+                    <li><span class="en-text">Introduction to databases and data persistence</span><span class="es-text hidden">Introducción a bases de datos y persistencia de datos</span></li>
+                    <li><span class="en-text">Learn Cursor IDE for professional development</span><span class="es-text hidden">Aprende IDE Cursor para desarrollo profesional</span></li>
+                    <li><span class="en-text">API integration basics</span><span class="es-text hidden">Básicos de integración de API</span></li>
+                </ul>
+
+                <h4 style="margin-top: 15px; color: #1a7480;">
+                    <span class="en-text">Hands-On Projects:</span>
+                    <span class="es-text hidden">Proyectos Prácticos:</span>
+                </h4>
+                <ol style="margin-left: 20px;">
+                    <li><span class="en-text">Todo list with advanced features (priority, due dates, categories)</span><span class="es-text hidden">Lista de tareas con características avanzadas (prioridad, fechas de vencimiento, categorías)</span></li>
+                    <li><span class="en-text">Budget tracker with charts and reports</span><span class="es-text hidden">Rastreador de presupuesto con gráficos e informes</span></li>
+                    <li><span class="en-text">Multi-page blog platform</span><span class="es-text hidden">Plataforma de blog de múltiples páginas</span></li>
+                    <li><span class="en-text">E-commerce product listing</span><span class="es-text hidden">Listado de productos de comercio electrónico</span></li>
+                    <li><span class="en-text">Real-time chat application</span><span class="es-text hidden">Aplicación de chat en tiempo real</span></li>
+                </ol>
+
+                <h4 style="margin-top: 15px; color: #1a7480;">
+                    <span class="en-text">Resources:</span>
+                    <span class="es-text hidden">Recursos:</span>
+                </h4>
+                <ul class="feature-list">
+                    <li><a href="https://www.cursor.com" class="resource-link" target="_blank">Cursor IDE - Professional Development</a></li>
+                    <li><a href="https://github.blog/en/news-and-updates/github-copilot/" class="resource-link" target="_blank">GitHub Copilot Best Practices</a></li>
+                    <li><a href="https://supabase.com/docs" class="resource-link" target="_blank">Supabase Database Guide</a></li>
+                </ul>
+            </div>
+
+            <div class="subsection">
+                <h3>
+                    <span class="en-text">🟠 Level 3: Advanced Techniques (Week 7-12)</span>
+                    <span class="es-text hidden">🟠 Nivel 3: Técnicas Avanzadas (Semana 7-12)</span>
+                </h3>
+
+                <h4 style="margin-top: 15px; color: #1a7480;">
+                    <span class="en-text">Topics to Master:</span>
+                    <span class="es-text hidden">Temas a Dominar:</span>
+                </h4>
+                <ul class="feature-list">
+                    <li><span class="en-text">Full-stack architecture (frontend + backend + database)</span><span class="es-text hidden">Arquitectura full-stack (frontend + backend + base de datos)</span></li>
+                    <li><span class="en-text">Complex API integrations and third-party services</span><span class="es-text hidden">Integraciones complejas de API y servicios de terceros</span></li>
+                    <li><span class="en-text">Authentication systems (JWT, OAuth, 2FA)</span><span class="es-text hidden">Sistemas de autenticación (JWT, OAuth, 2FA)</span></li>
+                    <li><span class="en-text">Performance optimization and scalability</span><span class="es-text hidden">Optimización del rendimiento y escalabilidad</span></li>
+                    <li><span class="en-text">Code review and refactoring AI-generated code</span><span class="es-text hidden">Revisión de código y refactorización del código generado por IA</span></li>
+                    <li><span class="en-text">Testing strategies (unit, integration, E2E)</span><span class="es-text hidden">Estrategias de prueba (unitarias, integración, E2E)</span></li>
+                </ul>
+
+                <h4 style="margin-top: 15px; color: #1a7480;">
+                    <span class="en-text">Hands-On Projects:</span>
+                    <span class="es-text hidden">Proyectos Prácticos:</span>
+                </h4>
+                <ol style="margin-left: 20px;">
+                    <li><span class="en-text">Complete SaaS application (user management, payment, subscriptions)</span><span class="es-text hidden">Aplicación SaaS completa (gestión de usuarios, pagos, suscripciones)</span></li>
+                    <li><span class="en-text">Real-time collaborative app (like Google Docs)</span><span class="es-text hidden">Aplicación colaborativa en tiempo real (como Google Docs)</span></li>
+                    <li><span class="en-text">Mobile-responsive web app with offline capabilities</span><span class="es-text hidden">Aplicación web receptiva móvil con capacidades sin conexión</span></li>
+                    <li><span class="en-text">Multi-tenant SaaS platform</span><span class="es-text hidden">Plataforma SaaS multiinquilino</span></li>
+                    <li><span class="en-text">Real-time analytics dashboard</span><span class="es-text hidden">Panel de análisis en tiempo real</span></li>
+                </ol>
+
+                <h4 style="margin-top: 15px; color: #1a7480;">
+                    <span class="en-text">Resources:</span>
+                    <span class="es-text hidden">Recursos:</span>
+                </h4>
+                <ul class="feature-list">
+                    <li><a href="https://www.emergent.ai" class="resource-link" target="_blank">Emergent - Full-Stack Platform</a></li>
+                    <li><a href="https://stripe.com/docs" class="resource-link" target="_blank">Stripe API Documentation (Payments)</a></li>
+                    <li><a href="https://vercel.com/docs" class="resource-link" target="_blank">Vercel Deployment Guide</a></li>
+                    <li><a href="https://www.docker.com/" class="resource-link" target="_blank">Docker & Containerization</a></li>
+                </ul>
+            </div>
+
+            <div class="subsection">
+                <h3>
+                    <span class="en-text">🔴 Level 4: Mastery (Week 13+)</span>
+                    <span class="es-text hidden">🔴 Nivel 4: Maestría (Semana 13+)</span>
+                </h3>
+
+                <h4 style="margin-top: 15px; color: #1a7480;">
+                    <span class="en-text">Topics to Master:</span>
+                    <span class="es-text hidden">Temas a Dominar:</span>
+                </h4>
+                <ul class="feature-list">
+                    <li><span class="en-text">Production deployment and DevOps</span><span class="es-text hidden">Implementación en producción y DevOps</span></li>
+                    <li><span class="en-text">Advanced security practices and penetration testing</span><span class="es-text hidden">Prácticas de seguridad avanzadas y pruebas de penetración</span></li>
+                    <li><span class="en-text">Microservices architecture with AI assistance</span><span class="es-text hidden">Arquitectura de microservicios con asistencia de IA</span></li>
+                    <li><span class="en-text">Team collaboration and code management</span><span class="es-text hidden">Colaboración en equipo y gestión de código</span></li>
+                    <li><span class="en-text">Building AI agents and autonomous systems</span><span class="es-text hidden">Construcción de agentes de IA y sistemas autónomos</span></li>
+                    <li><span class="en-text">Emerging technologies (Web3, AI/ML, blockchain)</span><span class="es-text hidden">Tecnologías emergentes (Web3, IA/ML, blockchain)</span></li>
+                </ul>
+
+                <h4 style="margin-top: 15px; color: #1a7480;">
+                    <span class="en-text">Capstone Projects:</span>
+                    <span class="es-text hidden">Proyectos Capstone:</span>
+                </h4>
+                <ol style="margin-left: 20px;">
+                    <li><span class="en-text">Enterprise-grade web application</span><span class="es-text hidden">Aplicación web de nivel empresarial</span></li>
+                    <li><span class="en-text">AI-powered intelligent system (personalization, recommendations)</span><span class="es-text hidden">Sistema inteligente impulsado por IA (personalización, recomendaciones)</span></li>
+                    <li><span class="en-text">Marketplace platform (multi-seller ecosystem)</span><span class="es-text hidden">Plataforma de mercado (ecosistema multivendedor)</span></li>
+                    <li><span class="en-text">Contribute to open-source vibe-coding projects</span><span class="es-text hidden">Contribuir a proyectos de código abierto de vibe-coding</span></li>
+                </ol>
+            </div>
+        </div>
+
+        <!-- BEST PRACTICES SECTION -->
+        <div id="best-practices" class="content-section">
+            <h2 class="section-title">
+                <span class="en-text">Best Practices & Tips</span>
+                <span class="es-text hidden">Mejores Prácticas y Consejos</span>
+            </h2>
+
+            <div class="subsection">
+                <h3>
+                    <span class="en-text">✅ Do's in Vibe-Coding</span>
+                    <span class="es-text hidden">✅ Lo que Debes Hacer en Vibe-Coding</span>
+                </h3>
+                <ul class="feature-list">
+                    <li><span class="en-text"><strong>Use checkpoints:</strong> Save stable versions regularly to quickly rollback if new features break things</span><span class="es-text hidden"><strong>Usa puntos de control:</strong> Guarda versiones estables regularmente para revertir rápidamente si nuevas características rompen las cosas</span></li>
+                    <li><span class="en-text"><strong>Ask questions actively:</strong> Engage the AI with "how can we solve this?" rather than just demands</span><span class="es-text hidden"><strong>Haz preguntas activamente:</strong> Engancha a la IA con "¿cómo podemos resolver esto?" en lugar de solo demandas</span></li>
+                    <li><span class="en-text"><strong>Test thoroughly:</strong> Test edge cases, error handling, and user flows before deployment</span><span class="es-text hidden"><strong>Prueba exhaustivamente:</strong> Prueba casos límite, manejo de errores y flujos de usuario antes de la implementación</span></li>
+                    <li><span class="en-text"><strong>Document your flow:</strong> Keep track of prompts and iterations for future reference</span><span class="es-text hidden"><strong>Documenta tu flujo:</strong> Mantén un registro de indicaciones e iteraciones para referencia futura</span></li>
+                    <li><span class="en-text"><strong>Start simple:</strong> Build MVP first, then add features iteratively</span><span class="es-text hidden"><strong>Empieza simple:</strong> Construye MVP primero, luego agrega características iterativamente</span></li>
+                    <li><span class="en-text"><strong>Iterate incrementally:</strong> Make small requests to avoid generating unwanted changes</span><span class="es-text hidden"><strong>Itera incrementalmente:</strong> Haz pequeñas solicitudes para evitar cambios no deseados</span></li>
+                    <li><span class="en-text"><strong>Review code regularly:</strong> Even if AI generates it, understand what's happening</span><span class="es-text hidden"><strong>Revisa código regularmente:</strong> Incluso si la IA lo genera, entiende qué está sucediendo</span></li>
+                    <li><span class="en-text"><strong>Choose the right tool:</strong> Match tool to use case (Bolt for quick apps, Cursor for existing projects)</span><span class="es-text hidden"><strong>Elige la herramienta adecuada:</strong> Empareja la herramienta con el caso de uso (Bolt para aplicaciones rápidas, Cursor para proyectos existentes)</span></li>
+                </ul>
+            </div>
+
+            <div class="subsection">
+                <h3>
+                    <span class="en-text">❌ Don'ts in Vibe-Coding</span>
+                    <span class="es-text hidden">❌ Lo que NO Debes Hacer en Vibe-Coding</span>
+                </h3>
+                <ul class="feature-list">
+                    <li><span class="en-text"><strong>Don't accept code blindly:</strong> Understand what AI generates before deploying</span><span class="es-text hidden"><strong>No aceptes código ciegamente:</strong> Comprende lo que genera la IA antes de implementar</span></li>
+                    <li><span class="en-text"><strong>Don't ignore security:</strong> Always validate inputs, sanitize data, use HTTPS</span><span class="es-text hidden"><strong>No ignores la seguridad:</strong> Siempre valida entradas, desinfecta datos, usa HTTPS</span></li>
+                    <li><span class="en-text"><strong>Don't skip error handling:</strong> Explicitly ask AI to include try-catch blocks and error messages</span><span class="es-text hidden"><strong>No saltes el manejo de errores:</strong> Pide explícitamente a la IA que incluya bloques try-catch y mensajes de error</span></li>
+                    <li><span class="en-text"><strong>Don't make massive requests:</strong> Break complex features into smaller prompts</span><span class="es-text hidden"><strong>No hagas solicitudes masivas:</strong> Divide características complejas en indicaciones más pequeñas</span></li>
+                    <li><span class="en-text"><strong>Don't forget testing:</strong> Deploy untested code and you'll regret it</span><span class="es-text hidden"><strong>No olvides probar:</strong> Implementa código no probado y lo lamentarás</span></li>
+                    <li><span class="en-text"><strong>Don't accumulate technical debt:</strong> Refactor and optimize early to avoid cascading failures</span><span class="es-text hidden"><strong>No acumules deuda técnica:</strong> Refactoriza y optimiza temprano para evitar fallos en cascada</span></li>
+                    <li><span class="en-text"><strong>Don't use outdated models:</strong> Prefer newer, more capable LLMs (GPT-4, Claude 3, Gemini)</span><span class="es-text hidden"><strong>No uses modelos desactualizados:</strong> Prefiere LLMs más nuevos y capaces (GPT-4, Claude 3, Gemini)</span></li>
+                    <li><span class="en-text"><strong>Don't neglect performance:</strong> Ask AI to optimize: caching, lazy loading, compression</span><span class="es-text hidden"><strong>No descuides el rendimiento:</strong> Pide a la IA que optimice: almacenamiento en caché, carga lenta, compresión</span></li>
+                </ul>
+            </div>
+
+            <div class="subsection">
+                <h3>
+                    <span class="en-text">🎯 Prompt Engineering Tips</span>
+                    <span class="es-text hidden">🎯 Consejos de Ingeniería de Indicaciones</span>
+                </h3>
+
+                <h4 style="color: #4ecdc4; margin-top: 15px;">
+                    <span class="en-text">Technique 1: Chain-of-Thought</span>
+                    <span class="es-text hidden">Técnica 1: Cadena de Pensamiento</span>
+                </h4>
+                <div class="code-block">
+# Instead of:
+"Create a login page"
+
+# Do this:
+"I need a login page that:
+1. Shows email/password form fields
+2. Validates email format before submission
+3. Shows error messages for invalid entries
+4. On successful login, stores JWT token
+5. Redirects to dashboard
+Think about the flow step by step."
+                </div>
+
+                <h4 style="color: #4ecdc4; margin-top: 15px;">
+                    <span class="en-text">Technique 2: Few-Shot Examples</span>
+                    <span class="es-text hidden">Técnica 2: Ejemplos de Pocos Casos</span>
+                </h4>
+                <div class="code-block">
+"Create a product card component that shows:
+- Product image
+- Product name
+- Price (highlighted in color: #FF6B6B)
+- Rating (5-star display)
+- Add to cart button
+
+Example of desired layout:
+[Image placeholder]
+Product Name
+$29.99 ⭐⭐⭐⭐⭐ (124 reviews)
+[Add to Cart Button]
+
+Make it responsive and match this color scheme..."
+                </div>
+
+                <h4 style="color: #4ecdc4; margin-top: 15px;">
+                    <span class="en-text">Technique 3: Specify Constraints</span>
+                    <span class="es-text hidden">Técnica 3: Especifica Restricciones</span>
+                </h4>
+                <div class="code-block">
+"Build a dashboard with these constraints:
+- Must load in < 3 seconds
+- Data must refresh every 30 seconds
+- Maximum bundle size: 500KB
+- Must support Safari, Chrome, Firefox
+- Dark mode support required
+- No external jQuery (vanilla JS or React only)
+- Accessible (WCAG 2.1 AA compliance)"
+                </div>
+
+                <h4 style="color: #4ecdc4; margin-top: 15px;">
+                    <span class="en-text">Technique 4: Error Context</span>
+                    <span class="es-text hidden">Técnica 4: Contexto de Error</span>
+                </h4>
+                <div class="code-block">
+"This code isn't working properly. The issue is [describe problem].
+Here's what I expected: [desired behavior]
+Here's what actually happens: [actual behavior]
+Error message: [paste error if any]
+
+Can you fix this? Please also explain what was wrong."
+                </div>
+            </div>
+
+            <div class="subsection">
+                <h3>
+                    <span class="en-text">🚀 Common Workflow Patterns</span>
+                    <span class="es-text hidden">🚀 Patrones de Flujo de Trabajo Comunes</span>
+                </h3>
+
+                <h4 style="color: #1a7480; margin-top: 15px;">
+                    <span class="en-text">Pattern 1: Complete App from Scratch (Bolt/Lovable)</span>
+                    <span class="es-text hidden">Patrón 1: Aplicación Completa desde Cero (Bolt/Lovable)</span>
+                </h4>
+                <ol style="margin-left: 20px; line-height: 2;">
+                    <li><span class="en-text">Write detailed initial prompt</span><span class="es-text hidden">Escribe indicación inicial detallada</span></li>
+                    <li><span class="en-text">Review generated app</span><span class="es-text hidden">Revisa la aplicación generada</span></li>
+                    <li><span class="en-text">Request refinements for each feature</span><span class="es-text hidden">Solicita refinamientos para cada característica</span></li>
+                    <li><span class="en-text">Test thoroughly</span><span class="es-text hidden">Prueba exhaustivamente</span></li>
+                    <li><span class="en-text">Deploy with one-click</span><span class="es-text hidden">Implementa con un clic</span></li>
+                </ol>
+
+                <h4 style="color: #1a7480; margin-top: 15px;">
+                    <span class="en-text">Pattern 2: Existing Project Enhancement (Cursor)</span>
+                    <span class="es-text hidden">Patrón 2: Mejora de Proyecto Existente (Cursor)</span>
+                </h4>
+                <ol style="margin-left: 20px; line-height: 2;">
+                    <li><span class="en-text">Open project in Cursor</span><span class="es-text hidden">Abre proyecto en Cursor</span></li>
+                    <li><span class="en-text">Describe desired feature or fix</span><span class="es-text hidden">Describe la característica o corrección deseada</span></li>
+                    <li><span class="en-text">AI suggests changes with preview</span><span class="es-text hidden">La IA sugiere cambios con vista previa</span></li>
+                    <li><span class="en-text">Accept or ask for refinements</span><span class="es-text hidden">Acepta o pide refinamientos</span></li>
+                    <li><span class="en-text">Test in local environment</span><span class="es-text hidden">Prueba en entorno local</span></li>
+                    <li><span class="en-text">Commit to version control</span><span class="es-text hidden">Confirma en control de versiones</span></li>
+                </ol>
+
+                <h4 style="color: #1a7480; margin-top: 15px;">
+                    <span class="en-text">Pattern 3: Feature-By-Feature Build-Out</span>
+                    <span class="es-text hidden">Patrón 3: Construcción Característica por Característica</span>
+                </h4>
+                <ol style="margin-left: 20px; line-height: 2;">
+                    <li><span class="en-text">Define core MVP features</span><span class="es-text hidden">Define características MVP principales</span></li>
+                    <li><span class="en-text">Build Feature 1 end-to-end (frontend + backend)</span><span class="es-text hidden">Construye Feature 1 de extremo a extremo (frontend + backend)</span></li>
+                    <li><span class="en-text">Checkpoint/commit</span><span class="es-text hidden">Punto de control/confirmar</span></li>
+                    <li><span class="en-text">Build Feature 2, then Feature 3, etc.</span><span class="es-text hidden">Construye Feature 2, luego Feature 3, etc.</span></li>
+                    <li><span class="en-text">Integration testing between features</span><span class="es-text hidden">Pruebas de integración entre características</span></li>
+                    <li><span class="en-text">Polish and optimize</span><span class="es-text hidden">Pule y optimiza</span></li>
+                </ol>
+            </div>
+
+            <div class="subsection">
+                <h3>
+                    <span class="en-text">⚠️ Avoiding Common Pitfalls</span>
+                    <span class="es-text hidden">⚠️ Evitando Errores Comunes</span>
+                </h3>
+
+                <h4 style="color: #ff6b6b; margin-top: 15px;">
+                    <span class="en-text">Pitfall 1: Technical Debt Accumulation</span>
+                    <span class="es-text hidden">Trampa 1: Acumulación de Deuda Técnica</span>
+                </h4>
+                <p>
+                    <span class="en-text"><strong>Problem:</strong> Accepting AI-generated code without refactoring leads to unmaintainable mess</span>
+                    <span class="es-text hidden"><strong>Problema:</strong> Aceptar código generado por IA sin refactorización conduce a un lío inmantenible</span>
+                </p>
+                <p>
+                    <span class="en-text"><strong>Solution:</strong> Every 3-4 features, ask AI to refactor, clean up code, add comments</span>
+                    <span class="es-text hidden"><strong>Solución:</strong> Cada 3-4 características, pide a la IA que refactorice, limpie código, añada comentarios</span>
+                </p>
+
+                <h4 style="color: #ff6b6b; margin-top: 15px;">
+                    <span class="en-text">Pitfall 2: Security Vulnerabilities</span>
+                    <span class="es-text hidden">Trampa 2: Vulnerabilidades de Seguridad</span>
+                </h4>
+                <p>
+                    <span class="en-text"><strong>Problem:</strong> AI might generate code with SQL injection, XSS, or weak auth</span>
+                    <span class="es-text hidden"><strong>Problema:</strong> La IA podría generar código con inyección SQL, XSS o autenticación débil</span>
+                </p>
+                <p>
+                    <span class="en-text"><strong>Solution:</strong> Explicitly ask for security best practices in every auth/database prompt</span>
+                    <span class="es-text hidden"><strong>Solución:</strong> Pide explícitamente mejores prácticas de seguridad en cada indicación de auth/base de datos</span>
+                </p>
+
+                <h4 style="color: #ff6b6b; margin-top: 15px;">
+                    <span class="en-text">Pitfall 3: Performance Issues</span>
+                    <span class="es-text hidden">Trampa 3: Problemas de Rendimiento</span>
+                </h4>
+                <p>
+                    <span class="en-text"><strong>Problem:</strong> Unoptimized AI code can create slow, bloated applications</span>
+                    <span class="es-text hidden"><strong>Problema:</strong> El código de IA no optimizado puede crear aplicaciones lentas y voluminosas</span>
+                </p>
+                <p>
+                    <span class="en-text"><strong>Solution:</strong> Test page load times, use performance monitoring, ask for optimization</span>
+                    <span class="es-text hidden"><strong>Solución:</strong> Prueba tiempos de carga de página, usa monitoreo de rendimiento, pide optimización</span>
+                </p>
+
+                <h4 style="color: #ff6b6b; margin-top: 15px;">
+                    <span class="en-text">Pitfall 4: Vague Prompts Leading to Wrong Output</span>
+                    <span class="es-text hidden">Trampa 4: Indicaciones Vagas que Generan Salida Incorrecta</span>
+                </h4>
+                <p>
+                    <span class="en-text"><strong>Problem:</strong> Saying "make it better" doesn't guide the AI effectively</span>
+                    <span class="es-text hidden"><strong>Problema:</strong> Decir "hazlo mejor" no guía efectivamente a la IA</span>
+                </p>
+                <p>
+                    <span class="en-text"><strong>Solution:</strong> Be specific: "Improve performance by adding caching to reduce DB queries by 50%"</span>
+                    <span class="es-text hidden"><strong>Solución:</strong> Sé específico: "Mejora el rendimiento añadiendo almacenamiento en caché para reducir consultas de BD en un 50%"</span>
+                </p>
+            </div>
+        </div>
+
+        <!-- RESOURCES SECTION -->
+        <div id="resources" class="content-section">
+            <h2 class="section-title">
+                <span class="en-text">Complete Resource Library</span>
+                <span class="es-text hidden">Biblioteca Completa de Recursos</span>
+            </h2>
+
+            <div class="subsection">
+                <h3>
+                    <span class="en-text">📚 Essential Documentation</span>
+                    <span class="es-text hidden">📚 Documentación Esencial</span>
+                </h3>
+                <table class="comparison-table">
+                    <tr>
+                        <th><span class="en-text">Resource</span><span class="es-text hidden">Recurso</span></th>
+                        <th><span class="en-text">Purpose</span><span class="es-text hidden">Propósito</span></th>
+                        <th><span class="en-text">Link</span></th>
+                    </tr>
+                    <tr>
+                        <td><span class="en-text">Google's Vibe-Coding Guide</span><span class="es-text hidden">Guía de Vibe-Coding de Google</span></td>
+                        <td><span class="en-text">Official introduction to vibe-coding</span><span class="es-text hidden">Introducción oficial a vibe-coding</span></td>
+                        <td><a href="https://cloud.google.com/discover/what-is-vibe-coding" class="resource-link" target="_blank"><span class="en-text">Visit</span><span class="es-text hidden">Visitar</span></a></td>
+                    </tr>
+                    <tr>
+                        <td><span class="en-text">GitHub Vibe-Coding Resources</span><span class="es-text hidden">Recursos de Vibe-Coding de GitHub</span></td>
+                        <td><span class="en-text">Community-driven vibe-coding content</span><span class="es-text hidden">Contenido de vibe-coding impulsado por la comunidad</span></td>
+                        <td><a href="https://github.com/resources/articles/what-is-vibe-coding" class="resource-link" target="_blank"><span class="en-text">Visit</span><span class="es-text hidden">Visitar</span></a></td>
+                    </tr>
+                    <tr>
+                        <td><span class="en-text">IBM Vibe-Coding Article</span><span class="es-text hidden">Artículo de Vibe-Coding de IBM</span></td>
+                        <td><span class="en-text">Enterprise perspective on vibe-coding</span><span class="es-text hidden">Perspectiva empresarial sobre vibe-coding</span></td>
+                        <td><a href="https://www.ibm.com/think/topics/vibe-coding" class="resource-link" target="_blank"><span class="en-text">Visit</span><span class="es-text hidden">Visitar</span></a></td>
+                    </tr>
+                    <tr>
+                        <td><span class="en-text">Replit Vibe-Coding Guide</span><span class="es-text hidden">Guía de Vibe-Coding de Replit</span></td>
+                        <td><span class="en-text">Practical vibe-coding with Replit</span><span class="es-text hidden">Vibe-coding práctico con Replit</span></td>
+                        <td><a href="https://blog.replit.com/what-is-vibe-coding" class="resource-link" target="_blank"><span class="en-text">Visit</span><span class="es-text hidden">Visitar</span></a></td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="subsection">
+                <h3>
+                    <span class="en-text">🔧 Model & Service Documentation</span>
+                    <span class="es-text hidden">🔧 Documentación de Modelo y Servicio</span>
+                </h3>
+
+                <h4 style="margin-top: 15px; color: #1a7480;">
+                    <span class="en-text">Large Language Models (LLMs):</span>
+                    <span class="es-text hidden">Modelos de Lenguaje Grande (LLMs):</span>
+                </h4>
+                <ul class="feature-list">
+                    <li><a href="https://platform.openai.com/docs" class="resource-link" target="_blank">OpenAI API (GPT-4, GPT-4o)</a></li>
+                    <li><a href="https://docs.anthropic.com" class="resource-link" target="_blank">Anthropic Claude API</a></li>
+                    <li><a href="https://ai.google.dev" class="resource-link" target="_blank">Google Gemini API</a></li>
+                    <li><a href="https://docs.mistral.ai" class="resource-link" target="_blank">Mistral AI API</a></li>
+                    <li><a href="https://x.ai/api" class="resource-link" target="_blank">xAI Grok API</a></li>
+                </ul>
+
+                <h4 style="margin-top: 20px; color: #1a7480;">
+                    <span class="en-text">Database Services:</span>
+                    <span class="es-text hidden">Servicios de Base de Datos:</span>
+                </h4>
+                <ul class="feature-list">
+                    <li><a href="https://supabase.com/docs" class="resource-link" target="_blank">Supabase (PostgreSQL + Auth)</a></li>
+                    <li><a href="https://www.mongodb.com/docs" class="resource-link" target="_blank">MongoDB Atlas</a></li>
+                    <li><a href="https://www.prisma.io/docs" class="resource-link" target="_blank">Prisma ORM</a></li>
+                    <li><a href="https://www.mysql.com/products/community/" class="resource-link" target="_blank">MySQL</a></li>
+                    <li><a href="https://www.postgresql.org/docs" class="resource-link" target="_blank">PostgreSQL</a></li>
+                </ul>
+
+                <h4 style="margin-top: 20px; color: #1a7480;">
+                    <span class="en-text">Payment & Monetization:</span>
+                    <span class="es-text hidden">Pago y Monetización:</span>
+                </h4>
+                <ul class="feature-list">
+                    <li><a href="https://stripe.com/docs" class="resource-link" target="_blank">Stripe Payments</a></li>
+                    <li><a href="https://docs.razorpay.com" class="resource-link" target="_blank">Razorpay</a></li>
+                    <li><a href="https://developer.paypal.com" class="resource-link" target="_blank">PayPal API</a></li>
+                    <li><a href="https://square.github.io/square-python-sdk" class="resource-link" target="_blank">Square SDK</a></li>
+                </ul>
+
+                <h4 style="margin-top: 20px; color: #1a7480;">
+                    <span class="en-text">Hosting & Deployment:</span>
+                    <span class="es-text hidden">Alojamiento e Implementación:</span>
+                </h4>
+                <ul class="feature-list">
+                    <li><a href="https://vercel.com/docs" class="resource-link" target="_blank">Vercel</a></li>
+                    <li><a href="https://www.netlify.com/docs" class="resource-link" target="_blank">Netlify</a></li>
+                    <li><a href="https://railway.app/docs" class="resource-link" target="_blank">Railway</a></li>
+                    <li><a href="https://cloud.google.com/docs" class="resource-link" target="_blank">Google Cloud</a></li>
+                    <li><a href="https://aws.amazon.com/documentation/" class="resource-link" target="_blank">AWS</a></li>
+                </ul>
+            </div>
+
+            <div class="subsection">
+                <h3>
+                    <span class="en-text">🎓 Learning Platforms</span>
+                    <span class="es-text hidden">🎓 Plataformas de Aprendizaje</span>
+                </h3>
+                <ul class="feature-list">
+                    <li><a href="https://www.youtube.com/results?search_query=vibe+coding" class="resource-link" target="_blank">YouTube - Vibe-Coding Tutorials</a></li>
+                    <li><a href="https://deeplearning.ai/" class="resource-link" target="_blank">DeepLearning.AI - Free Courses</a></li>
+                    <li><a href="https://www.coursera.org" class="resource-link" target="_blank">Coursera - AI & Web Dev Courses</a></li>
+                    <li><a href="https://www.udemy.com" class="resource-link" target="_blank">Udemy - Comprehensive Courses</a></li>
+                    <li><a href="https://education.github.com/students" class="resource-link" target="_blank">GitHub Education - Free Resources</a></li>
+                </ul>
+            </div>
+
+            <div class="subsection">
+                <h3>
+                    <span class="en-text">💡 Inspirational Projects & Examples</span>
+                    <span class="es-text hidden">💡 Proyectos Inspiradores y Ejemplos</span>
+                </h3>
+                <ul class="feature-list">
+                    <li><a href="https://github.com/topics/vibe-coding" class="resource-link" target="_blank">GitHub - Vibe-Coding Projects</a></li>
+                    <li><a href="https://www.producthunt.com" class="resource-link" target="_blank">Product Hunt - Latest AI Tools</a></li>
+                    <li><a href="https://www.dribbble.com" class="resource-link" target="_blank">Dribbble - UI/UX Design Inspiration</a></li>
+                    <li><a href="https://www.awwwards.com" class="resource-link" target="_blank">Awwwards - Web Design Awards</a></li>
+                    <li><a href="https://webcomponents.dev" class="resource-link" target="_blank">WebComponents.dev - Component Examples</a></li>
+                </ul>
+            </div>
+
+            <div class="subsection">
+                <h3>
+                    <span class="en-text">🤝 Community & Support</span>
+                    <span class="es-text hidden">🤝 Comunidad y Apoyo</span>
+                </h3>
+                <ul class="feature-list">
+                    <li><a href="https://www.reddit.com/r/ChatGPTCoding/" class="resource-link" target="_blank">Reddit - ChatGPTCoding Community</a></li>
+                    <li><a href="https://discord.gg/cursor" class="resource-link" target="_blank">Cursor Discord Community</a></li>
+                    <li><a href="https://github.com/discussions" class="resource-link" target="_blank">GitHub Discussions</a></li>
+                    <li><a href="https://stackoverflow.com" class="resource-link" target="_blank">Stack Overflow - Q&A</a></li>
+                    <li><a href="https://dev.to" class="resource-link" target="_blank">Dev.to - Developer Blog Platform</a></li>
+                </ul>
+            </div>
+
+            <div class="subsection">
+                <h3>
+                    <span class="en-text">📖 Key Articles & Papers</span>
+                    <span class="es-text hidden">📖 Artículos y Documentos Clave</span>
+                </h3>
+                <ul class="feature-list">
+                    <li><span class="en-text">Andrej Karpathy's Original Tweet:</span><span class="es-text hidden">Tweet Original de Andrej Karpathy:</span> <a href="https://twitter.com/karpathy/status/1886192184808149383" class="resource-link" target="_blank"><span class="en-text">@karpathy on Vibe-Coding</span><span class="es-text hidden">@karpathy sobre Vibe-Coding</span></a></li>
+                    <li><a href="https://en.wikipedia.org/wiki/Vibe_coding" class="resource-link" target="_blank">Wikipedia - Vibe Coding (Comprehensive Overview)</a></li>
+                    <li><a href="https://www.tanium.com/blog/what-is-vibe-coding/" class="resource-link" target="_blank">Tanium Blog - Vibe Coding Pros & Cons</a></li>
+                    <li><a href="https://graphite.com/guides/understanding-vibe-coding" class="resource-link" target="_blank">Graphite Guide - Understanding Vibe-Coding</a></li>
+                    <li><a href="https://emergent.sh/learn/best-vibe-coding-tools" class="resource-link" target="_blank">Emergent - Top 7 Vibe-Coding Tools 2026</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>
+            <span class="en-text">© 2026 Vibe-Coding Comprehensive Guide | Last Updated: January 2026</span>
+            <span class="es-text hidden">© 2026 Guía Integral de Vibe-Coding | Última Actualización: Enero de 2026</span>
+        </p>
+        <p>
+            <span class="en-text">This guide covers the latest tools, techniques, and best practices for vibe-coding development.</span>
+            <span class="es-text hidden">Esta guía cubre las últimas herramientas, técnicas y mejores prácticas para desarrollo de vibe-coding.</span>
+        </p>
+    </footer>
+
+    <script>
+        let currentLanguage = 'en';
+
+        function switchLanguage(lang) {
+            currentLanguage = lang;
+            
+            // Update button states
+            document.querySelectorAll('.toggle-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.dataset.lang === lang) {
+                    btn.classList.add('active');
+                }
+            });
+
+            // Update text visibility
+            document.querySelectorAll('.en-text').forEach(el => {
+                el.classList.toggle('hidden', lang !== 'en');
+            });
+            document.querySelectorAll('.es-text').forEach(el => {
+                el.classList.toggle('hidden', lang !== 'es');
+            });
+        }
+
+        function toggleTheme() {
+            document.body.classList.toggle('dark-mode');
+            localStorage.setItem('theme', document.body.classList.contains('dark-mode') ? 'dark' : 'light');
+        }
+
+        function switchSection(sectionId) {
+            // Hide all sections
+            document.querySelectorAll('.content-section').forEach(section => {
+                section.classList.remove('active');
+            });
+
+            // Remove active class from all tabs
+            document.querySelectorAll('.nav-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+
+            // Show selected section
+            const selectedSection = document.getElementById(sectionId);
+            if (selectedSection) {
+                selectedSection.classList.add('active');
+            }
+
+            // Add active class to clicked tab
+            event.target.closest('.nav-tab')?.classList.add('active');
+        }
+
+        // Initialize theme from localStorage
+        document.addEventListener('DOMContentLoaded', () => {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark') {
+                document.body.classList.add('dark-mode');
+            }
+        });
+    </script>
+</body>
+</html>
